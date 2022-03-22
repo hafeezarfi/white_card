@@ -109,7 +109,6 @@ class _DashboardState extends State<Dashboard> {
                   "Caption Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
                   style: Theme.of(context).textTheme.caption,
                 ),
-
               ],
             ),
           ),
@@ -118,7 +117,26 @@ class _DashboardState extends State<Dashboard> {
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
-        child: const Icon(Icons.add),
+        child: Icon(
+          Icons.add,
+          color: Theme.of(context).colorScheme.background,
+        ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: 'Search',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+        ],
       ), //
     );
   }

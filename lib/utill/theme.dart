@@ -1,12 +1,9 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
 class IDPTheme {
   static ThemeData getThemeData(BuildContext context) {
     final ThemeData appTheme = ThemeData(
       brightness: Brightness.light,
-      backgroundColor: const Color(0xffF7F7F7),
       primarySwatch: const MaterialColor(
         0xff3282B8,
         <int, Color>{
@@ -22,27 +19,87 @@ class IDPTheme {
           900: Color(0xff3282B8)
         },
       ),
-      indicatorColor: const Color(0xff3282B8),
-      primaryColor: const Color(0xff3282B8),
-      primaryColorBrightness: Brightness.light,
-      primaryColorLight: const Color(0x1a30475E),
-      primaryColorDark: const Color(0xff3282B8),
-      canvasColor: const Color(0xffdedede),
-      accentColor: const Color(0xff30475E),
-      accentColorBrightness: Brightness.light,
-      scaffoldBackgroundColor: const Color(0xffF7F7F7),
-      bottomAppBarColor: const Color(0xff3282B8),
-      splashColor: const Color(0xff3282B8),
-      cardColor: Colors.white,
-      dividerColor: const Color(0xff3282B8),
-      focusColor: const Color(0x1a30475E),
+      //   "colorScheme": {
+      // "background": "0xfff7f7f7",
+      // "brightness": "light",
+      // "error": "0xffba1b1b",
+      // "errorContainer": "0xffffdad4",
+      // "inversePrimary": "0xff9ccaff",
+      // "inverseSurface": "0xff2f3033",
+      // "onBackground": "0xff373a40",
+      // "onError": "0xffffffff",
+      // "onErrorContainer": "0xff410001",
+      // "onInverseSurface": "0xfff1f0f4",
+      // "onPrimary": "0xffffffff",
+      // "onPrimaryContainer": "0xff1e4e6e",
+      // "onSecondary": "0xffffffff",
+      // "onSecondaryContainer": "0xff1d2b38",
+      // "onSurface": "0xff212326",
+      // "onSurfaceVariant": "0xff42474e",
+      // "onTertiary": "0xffffffff",
+      // "onTertiaryContainer": "0xff251432",
+      // "outline": "0xff73777f",
+      // "primary": "0xff3282b8",
+      // "primaryContainer": "0xff8ebad8",
+      // "secondary": "0xff30475e",
+      // "secondaryContainer": "0xff8d9aa6",
+      // "shadow": "0xff000000",
+      // "surface": "0xfff7f7f7",
+      // "tertiary": "0xff6b5778",
+      // "tertiaryContainer": "0xfff3daff"
+      // },
+      colorScheme: const ColorScheme(
+          primary: Color(0xff3282B8),
+          primaryVariant: Color(0xff8ebad8),
+          secondary: Color(0xff30475e),
+          secondaryVariant: Color(0xff8d9aa6),
+          surface: Color(0xfff7f7f7),
+          background: Color(0xfff7f7f7),
+          error: Color(0xffba1b1b),
+          onPrimary: Color(0xff1e4e6e),
+          onSecondary: Color(0xff1d2b38),
+          onSurface: Color(0xff212326),
+          onBackground: Color(0xff373a40),
+          onError: Color(0xffffdad4),
+          brightness: Brightness.light),
+      // backgroundColor: const Color(0xffF7F7F7),
+      // indicatorColor: const Color(0xff3282B8),
+      // primaryColor: const Color(0xff3282B8),
+      // primaryColorBrightness: Brightness.light,
+      // primaryColorLight: const Color(0x1a30475E),
+      // primaryColorDark: const Color(0xff3282B8),
+      // canvasColor: const Color(0xffdedede),
+      // accentColor: const Color(0xff30475E),
+      // accentColorBrightness: Brightness.light,
+      // scaffoldBackgroundColor: const Color(0xffF7F7F7),
+      // bottomAppBarColor: const Color(0xff3282B8),
+      // splashColor: const Color(0xff3282B8),
+      // cardColor: Colors.white,
+      // dividerColor: const Color(0xff3282B8),
+      // focusColor: const Color(0x1a30475E),
       // indicatorColor:,
-      primaryIconTheme: const IconThemeData(color: Color(0xff3282B8)),
-
+      // primaryIconTheme: const IconThemeData(color: Color(0xff3282B8)),
+      floatingActionButtonTheme: const FloatingActionButtonThemeData(
+        backgroundColor: Color(0xff3282B8),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(16.0))),
+        enableFeedback: true,
+      ),
+      // bottomAppBarTheme: const BottomAppBarTheme(color: Color(0xff30475e)),
       // tooltipTheme: TooltipThemeData(triggerMode: TooltipTriggerMode.tap),
+      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+          selectedIconTheme: IconThemeData(color: Colors.white),
+          selectedLabelStyle: TextStyle(color: Colors.white),
+
+          backgroundColor: Color(0xff30475e)),
       appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xff3282B8),
+          backgroundColor: Color(0xff30475e),
           elevation: 0,
+          titleTextStyle: TextStyle(
+              color: Color(0xffffffff),
+              fontSize: 24,
+              fontWeight: FontWeight.normal,
+              letterSpacing: 0),
           iconTheme: IconThemeData(color: Color(0xffffffff)),
           actionsIconTheme: IconThemeData(color: Color(0xffffffff))),
       iconTheme: const IconThemeData(color: Color(0xff3282B8)),
@@ -65,23 +122,23 @@ class IDPTheme {
       textTheme: const TextTheme(
         headline1: TextStyle(
             color: Color(0xff3282B8),
-            fontSize: 96.0,
+            fontSize: 98.0,
             fontWeight: FontWeight.w300,
             letterSpacing: -1.5),
         headline2: TextStyle(
             color: Color(0xff3282B8),
-            fontSize: 60.0,
+            fontSize: 61.0,
             fontWeight: FontWeight.w300,
             letterSpacing: -0.5),
         headline3: TextStyle(
           color: Color(0xff3282B8),
-          fontSize: 48.0,
+          fontSize: 49.0,
           fontWeight: FontWeight.normal,
           letterSpacing: 0,
         ),
         headline4: TextStyle(
             color: Colors.black,
-            fontSize: 34,
+            fontSize: 35,
             fontWeight: FontWeight.normal,
             letterSpacing: 0.25),
         headline5: TextStyle(
