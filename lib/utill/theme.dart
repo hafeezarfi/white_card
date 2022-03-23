@@ -79,6 +79,7 @@ class IDPTheme {
       // focusColor: const Color(0x1a30475E),
       // indicatorColor:,
       // primaryIconTheme: const IconThemeData(color: Color(0xff3282B8)),
+      switchTheme: SwitchThemeData(),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
         backgroundColor: Color(0xff3282B8),
         shape: RoundedRectangleBorder(
