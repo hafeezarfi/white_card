@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "422293836761",
+    "project_id": "white-card69",
+    "storage_bucket": "white-card69.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:422293836761:android:2edb99260567cfccc57fc8",
+        "android_client_info": {
+          "package_name": "com.hafeezarfi.white_card"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "422293836761-oio6iccp70ne82q9vgh5bloaegloutei.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hafeezarfi.white_card",
+            "certificate_hash": "3ba6624a2a9db691e56fa923dc082e2d0d526a35"
+          }
+        },
+        {
+          "client_id": "422293836761-4m8t14nh3l1e2rh7t7d6qpnb0lfeosep.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqcC8D24t1AMAJkm7E0sF5d0lDPPaK-6E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "422293836761-4m8t14nh3l1e2rh7t7d6qpnb0lfeosep.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "422293836761-ljsoo6d49p4p7j73juv579oevdikbh9v.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.hafeezarfi.whiteCard"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

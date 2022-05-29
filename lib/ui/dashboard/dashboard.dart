@@ -64,9 +64,58 @@ class _DashboardState extends State<Dashboard> {
                 ),
               ),
             )
-          : Container(
+          : Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  GestureDetector(
+                    onTap: (){
 
-      ),
+                    },
+                    child: Container(
+                        height: 200,
+                        decoration: const BoxDecoration(
+                            color:  Color(0xff3282B8),
+                            borderRadius: BorderRadius.all(Radius.circular(5))),
+                        child: const Center(
+                          child: Text(
+                            'Admission',
+                            style: TextStyle(fontSize: 25),
+                          ),
+                        )),
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Container(
+                      height: 200,
+                      decoration: const BoxDecoration(
+                          color:  Color(0xff3282B8),
+                          borderRadius: BorderRadius.all(Radius.circular(5))),
+                      child: const Center(
+                        child: Text(
+                          'Scholarship',
+                          style: TextStyle(fontSize: 25),
+                        ),
+                      )),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Container(
+                      height: 200,
+                      decoration: const BoxDecoration(
+                          color:  Color(0xff3282B8),
+                          borderRadius: BorderRadius.all(Radius.circular(5))),
+                      child: const Center(
+                        child: Text(
+                          'Anti Ragging',
+                          style: TextStyle(fontSize: 25),
+                        ),
+                      )),
+                ],
+              ),
+            ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: _onTapItem,
