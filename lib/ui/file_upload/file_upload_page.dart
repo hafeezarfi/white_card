@@ -6,8 +6,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:white_card/files/models/file_model.dart';
 
@@ -28,7 +26,7 @@ class _FileUploadPageState extends State<FileUploadPage> {
     });
   }
 
-  final List<FileModel> items = [];
+  final List<FileModel> _items = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,16 +35,21 @@ class _FileUploadPageState extends State<FileUploadPage> {
         centerTitle: true,
         actions: [
           IconButton(
-            onPressed: () {
-              log('${items.length}');
+            onPressed: () async {
+              log('${_items.length}');
+
+              String linksStr = "";
+              for (var item in _items) {
+                final storageRef = FirebaseStorage.instance.ref();
+                final fileRef = storageRef.child(item.fullPath);
+                String url = await fileRef.getDownloadURL();
+                linksStr += item.name + ':\t' + url + '\n\n';
+              }
+              log(linksStr);
+              Share.share(linksStr);
             },
             icon: const Icon(Icons.share),
             tooltip: 'Share All Documents',
-          ),
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.download),
-            tooltip: 'Download all documents',
           ),
         ],
       ),
@@ -76,11 +79,16 @@ class _FileUploadPageState extends State<FileUploadPage> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                items[index].name,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
+                              Container(
+                                width: 250,
+                                child: Text(
+                                  _items[index].name,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
                               Row(
@@ -91,7 +99,7 @@ class _FileUploadPageState extends State<FileUploadPage> {
                                       final storageRef =
                                           FirebaseStorage.instance.ref();
                                       final fileRef = storageRef
-                                          .child(items[index].fullPath);
+                                          .child(_items[index].fullPath);
                                       String url =
                                           await fileRef.getDownloadURL();
                                       Share.share(url);
@@ -101,13 +109,42 @@ class _FileUploadPageState extends State<FileUploadPage> {
                                     splashColor: const Color(0xffdbb448),
                                   ),
                                   IconButton(
-                                    onPressed: () async {},
-                                    icon: const Icon(Icons.download),
-                                    splashRadius: 27,
-                                    splashColor: const Color(0xffdbb448),
-                                  ),
-                                  IconButton(
-                                    onPressed: () {},
+                                    onPressed: () async {
+                                      final storageRef =
+                                          FirebaseStorage.instance.ref();
+                                      final fileRef = storageRef
+                                          .child(_items[index].fullPath);
+
+                                      showAlertDialog(
+                                        context,
+                                        () {
+                                          Navigator.pop(context);
+                                        },
+                                        () async {
+                                          try {
+                                            await fileRef.delete();
+                                            Navigator.pop(context);
+                                            setState(() {
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(SnackBar(
+                                                      content: Text(
+                                                          '${_items[index].name} deleted successfully')));
+                                              _items.removeAt(index);
+                                            });
+                                          } catch (e) {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(const SnackBar(
+                                              content: Text(
+                                                  'Error deleting the file, refreshing the page'),
+                                              duration: Duration(seconds: 4),
+                                            ));
+                                            _getFiles();
+                                            Navigator.pop(context);
+                                          }
+                                        },
+                                        _items[index].name,
+                                      );
+                                    },
                                     icon: const Icon(Icons.delete),
                                     splashRadius: 27,
                                     splashColor: const Color(0xffdbb448),
@@ -125,7 +162,7 @@ class _FileUploadPageState extends State<FileUploadPage> {
                   );
                 },
                 physics: const AlwaysScrollableScrollPhysics(),
-                itemCount: items.length,
+                itemCount: _items.length,
               ),
             ),
           ),
@@ -161,6 +198,9 @@ class _FileUploadPageState extends State<FileUploadPage> {
 
         try {
           await filesRef.putFile(file);
+          setState(() {
+            _items.add(FileModel(filesRef.name, filesRef.fullPath));
+          });
         } on FirebaseException catch (e) {
           log(e.toString());
           const SnackBar(
@@ -212,19 +252,46 @@ class _FileUploadPageState extends State<FileUploadPage> {
     final storageRef = FirebaseStorage.instance.ref();
     final path = _encryptUserId(user!.uid) + '/${widget.pageName}';
     final filesRef = storageRef.child(path);
-    if (items.isNotEmpty) {
-      items.clear();
+    if (_items.isNotEmpty) {
+      _items.clear();
     }
     await filesRef.listAll().then(
           (value) => value.items.forEach(
             (element) {
-              items.add(
+              _items.add(
                 FileModel(element.name, element.fullPath),
               );
-              log('list len: ${items.length}');
+              log('list len: ${_items.length}');
             },
           ),
         );
     setState(() {});
+  }
+
+  showAlertDialog(BuildContext context, VoidCallback? onCancel,
+      VoidCallback? onYes, String filename) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("Cancel"),
+      onPressed: onCancel,
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Continue"),
+      onPressed: onYes,
+    ); // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("AlertDialog"),
+      content: Text("Are you sure you want to delete $filename}?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    ); // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 }
