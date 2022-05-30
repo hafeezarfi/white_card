@@ -78,7 +78,7 @@ class _DashboardState extends State<Dashboard> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => FileUploadPage("Admission"),
+                          builder: (context) =>  FileUploadPage("Admission"),
                         ),
                       );
                     },
@@ -104,7 +104,7 @@ class _DashboardState extends State<Dashboard> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => FileUploadPage("Scholarship"),
+                          builder: (context) =>  FileUploadPage("Scholarship"),
                         ),
                       );
                     },
@@ -129,7 +129,7 @@ class _DashboardState extends State<Dashboard> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => FileUploadPage("Anti Ragging"),
+                          builder: (context) =>  FileUploadPage("Anti Ragging"),
                         ),
                       );
                     },

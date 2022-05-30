@@ -6,38 +6,129 @@ import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:white_card/files/models/file_model.dart';
 
-class FileUploadPage extends StatelessWidget {
-  const FileUploadPage(this.pageName, {Key? key}) : super(key: key);
+class FileUploadPage extends StatefulWidget {
+  FileUploadPage(this.pageName, {Key? key}) : super(key: key);
   final String pageName;
 
+  @override
+  State<FileUploadPage> createState() => _FileUploadPageState();
+}
+
+class _FileUploadPageState extends State<FileUploadPage> {
+  @override
+  initState() {
+    super.initState();
+    setState(() {
+      _getFiles();
+    });
+  }
+
+  final List<FileModel> items = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('$pageName Form Files'),
+        title: Text('${widget.pageName} Form Files'),
         centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {
+              log('${items.length}');
+            },
+            icon: const Icon(Icons.share),
+            tooltip: 'Share All Documents',
+          ),
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.download),
+            tooltip: 'Download all documents',
+          ),
+        ],
       ),
       body: Center(
-        child: ElevatedButton(
-          onPressed: () async {
-            // User? user = FirebaseAuth.instance.currentUser;
-            // final storageRef = FirebaseStorage.instance.ref();
-            // log(storageRef.fullPath);
-            // final userRef = storageRef.child(_encryptUserId(user!.uid));
-            // log(userRef.fullPath);
-            // final filesRef = userRef.child(pageName);
-            // log(filesRef.fullPath);
-            // final listOfFiles =await filesRef.list();
-            // log(listOfFiles.items.first.name);
-            //
-            // final appDocDirectory = await getApplicationDocumentsDirectory();
-            // final filepath = "${appDocDirectory.absolute}/${_encryptUserId(user.uid)}/$pageName}";
-            // final file = File(filepath);
-            //
-            // final downloadTask = filesRef.writeToFile(file);
-          },
-          child: const Text('Download all files'),
+        child: SafeArea(
+          child: RefreshIndicator(
+            onRefresh: () async {
+              await _getFiles();
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ListView.builder(
+                itemBuilder: (context, index) {
+                  return Column(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                            gradient: const LinearGradient(
+                                colors: [Colors.blue, Colors.white]),
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(5),
+                            ),
+                            border: Border.all()),
+                        // margin: const EdgeInsets.all(15),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                items[index].name,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  IconButton(
+                                    onPressed: () async {
+                                      final storageRef =
+                                          FirebaseStorage.instance.ref();
+                                      final fileRef = storageRef
+                                          .child(items[index].fullPath);
+                                      String url =
+                                          await fileRef.getDownloadURL();
+                                      Share.share(url);
+                                    },
+                                    icon: const Icon(Icons.share),
+                                    splashRadius: 27,
+                                    splashColor: const Color(0xffdbb448),
+                                  ),
+                                  IconButton(
+                                    onPressed: () async {},
+                                    icon: const Icon(Icons.download),
+                                    splashRadius: 27,
+                                    splashColor: const Color(0xffdbb448),
+                                  ),
+                                  IconButton(
+                                    onPressed: () {},
+                                    icon: const Icon(Icons.delete),
+                                    splashRadius: 27,
+                                    splashColor: const Color(0xffdbb448),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                    ],
+                  );
+                },
+                physics: const AlwaysScrollableScrollPhysics(),
+                itemCount: items.length,
+              ),
+            ),
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -65,13 +156,16 @@ class FileUploadPage extends StatelessWidget {
 
         final userRef = storageRef.child(encrypted);
 
-        final filesRef = userRef.child("$pageName/${splitted.last}");
+        final filesRef = userRef.child("${widget.pageName}/${splitted.last}");
         log(splitted.last);
 
         try {
           await filesRef.putFile(file);
         } on FirebaseException catch (e) {
           log(e.toString());
+          const SnackBar(
+            content: Text('Unable to upload file'),
+          );
           // ...
         }
       } else {
@@ -92,6 +186,7 @@ class FileUploadPage extends StatelessWidget {
     return encrypted.base64;
   }
 
+  /// Pagination
   Stream<ListResult> listAllPaginated(Reference storageRef) async* {
     String? pageToken;
     do {
@@ -102,5 +197,34 @@ class FileUploadPage extends StatelessWidget {
       yield listResult;
       pageToken = listResult.nextPageToken;
     } while (pageToken != null);
+  }
+
+  Reference _getReference() {
+    final User? user = FirebaseAuth.instance.currentUser;
+    final storageRef = FirebaseStorage.instance.ref();
+    final path = _encryptUserId(user!.uid) + '/${widget.pageName}';
+    final filesRef = storageRef.child(path);
+    return filesRef;
+  }
+
+  _getFiles() async {
+    final User? user = FirebaseAuth.instance.currentUser;
+    final storageRef = FirebaseStorage.instance.ref();
+    final path = _encryptUserId(user!.uid) + '/${widget.pageName}';
+    final filesRef = storageRef.child(path);
+    if (items.isNotEmpty) {
+      items.clear();
+    }
+    await filesRef.listAll().then(
+          (value) => value.items.forEach(
+            (element) {
+              items.add(
+                FileModel(element.name, element.fullPath),
+              );
+              log('list len: ${items.length}');
+            },
+          ),
+        );
+    setState(() {});
   }
 }

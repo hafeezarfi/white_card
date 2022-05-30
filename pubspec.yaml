@@ -42,6 +42,8 @@ dependencies:
       url: https://github.com/saquibansari0101/introduction_screen
   email_validator: ^2.0.1
   firebase_storage: ^10.2.17
+  share_plus: ^4.0.4
+  flutter_downloader: ^1.8.0+1
 
 dev_dependencies:
   flutter_test:

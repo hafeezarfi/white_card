@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:white_card/blocs/auth_bloc/auth_bloc.dart';
 import 'package:white_card/data/repositories/auth_repository.dart';
 import 'package:white_card/ui/dashboard/dashboard.dart';
@@ -23,6 +24,11 @@ Future<void> main() async {
       log('User is signed in!');
     }
   });
+
+  await FlutterDownloader.initialize(
+    debug: true,
+    ignoreSsl: true,
+  );
 
   runApp(const MyApp());
 }
