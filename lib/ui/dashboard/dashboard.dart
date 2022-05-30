@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:white_card/blocs/auth_bloc/auth_bloc.dart';
+import 'package:white_card/ui/file_upload/file_upload_page.dart';
 import 'package:white_card/ui/login/login_screen.dart';
 
 class Dashboard extends StatefulWidget {
@@ -70,17 +73,49 @@ class _DashboardState extends State<Dashboard> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   GestureDetector(
-                    onTap: (){
-
+                    onTap: () {
+                      log('file upload!');
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => FileUploadPage("Admission"),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      height: 200,
+                      decoration: const BoxDecoration(
+                          color: Color(0xff3282B8),
+                          borderRadius: BorderRadius.all(Radius.circular(5))),
+                      child: const Center(
+                        child: Text(
+                          'Admission',
+                          style: TextStyle(fontSize: 25),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      log('file upload!');
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => FileUploadPage("Scholarship"),
+                        ),
+                      );
                     },
                     child: Container(
                         height: 200,
                         decoration: const BoxDecoration(
-                            color:  Color(0xff3282B8),
+                            color: Color(0xff3282B8),
                             borderRadius: BorderRadius.all(Radius.circular(5))),
                         child: const Center(
                           child: Text(
-                            'Admission',
+                            'Scholarship',
                             style: TextStyle(fontSize: 25),
                           ),
                         )),
@@ -88,31 +123,28 @@ class _DashboardState extends State<Dashboard> {
                   const SizedBox(
                     height: 15,
                   ),
-                  Container(
-                      height: 200,
-                      decoration: const BoxDecoration(
-                          color:  Color(0xff3282B8),
-                          borderRadius: BorderRadius.all(Radius.circular(5))),
-                      child: const Center(
-                        child: Text(
-                          'Scholarship',
-                          style: TextStyle(fontSize: 25),
+                  GestureDetector(
+                    onTap: () {
+                      log('file upload!');
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => FileUploadPage("Anti Ragging"),
                         ),
-                      )),
-                  const SizedBox(
-                    height: 15,
+                      );
+                    },
+                    child: Container(
+                        height: 200,
+                        decoration: const BoxDecoration(
+                            color: Color(0xff3282B8),
+                            borderRadius: BorderRadius.all(Radius.circular(5))),
+                        child: const Center(
+                          child: Text(
+                            'Anti Ragging',
+                            style: TextStyle(fontSize: 25),
+                          ),
+                        )),
                   ),
-                  Container(
-                      height: 200,
-                      decoration: const BoxDecoration(
-                          color:  Color(0xff3282B8),
-                          borderRadius: BorderRadius.all(Radius.circular(5))),
-                      child: const Center(
-                        child: Text(
-                          'Anti Ragging',
-                          style: TextStyle(fontSize: 25),
-                        ),
-                      )),
                 ],
               ),
             ),

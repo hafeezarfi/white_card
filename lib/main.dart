@@ -39,6 +39,7 @@ class MyApp extends StatelessWidget {
       child: BlocProvider(
         create: (context)=>AuthBloc(authRepository: RepositoryProvider.of<AuthRepository>(context)),
         child: MaterialApp(
+          debugShowCheckedModeBanner: false,
           title: 'White Card',
           theme: IDPTheme.getThemeData(context),
           home: StreamBuilder<User?>(

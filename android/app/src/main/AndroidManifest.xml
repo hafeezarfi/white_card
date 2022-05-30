@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.hafeezarfi.white_card">
    <application
+       android:requestLegacyExternalStorage="true"
         android:label="white_card"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">

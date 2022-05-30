@@ -10,6 +10,7 @@ class RegisterPage extends StatelessWidget {
   final TextEditingController _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,9 +20,11 @@ class RegisterPage extends StatelessWidget {
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is Authenticated) {
+
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
+
                 builder: (context) => const Dashboard(),
               ),
             );
@@ -131,4 +134,5 @@ class RegisterPage extends StatelessWidget {
       GoogleSignInRequested(),
     );
   }
+
 }
