@@ -10,7 +10,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:white_card/files/models/file_model.dart';
 
 class FileUploadPage extends StatefulWidget {
-  FileUploadPage(this.pageName, {Key? key}) : super(key: key);
+  const FileUploadPage(this.pageName, {Key? key}) : super(key: key);
   final String pageName;
 
   @override
@@ -31,6 +31,15 @@ class _FileUploadPageState extends State<FileUploadPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Theme.of(context).appBarTheme.backgroundColor!,
+                  Colors.blue
+                ],
+              )),
+        ),
         title: Text('${widget.pageName} Form Files'),
         centerTitle: true,
         actions: [
@@ -67,8 +76,8 @@ class _FileUploadPageState extends State<FileUploadPage> {
                     children: [
                       Container(
                         decoration: BoxDecoration(
-                            gradient: const LinearGradient(
-                                colors: [Colors.blue, Colors.white]),
+                            gradient:  LinearGradient(
+                                colors: [Theme.of(context).floatingActionButtonTheme.backgroundColor!, Colors.white]),
                             borderRadius: const BorderRadius.all(
                               Radius.circular(5),
                             ),
@@ -79,7 +88,7 @@ class _FileUploadPageState extends State<FileUploadPage> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Container(
+                              SizedBox(
                                 width: 250,
                                 child: Text(
                                   _items[index].name,
@@ -87,7 +96,7 @@ class _FileUploadPageState extends State<FileUploadPage> {
                                   style: const TextStyle(
 
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.white,
+                                    color: Colors.white70,
                                   ),
                                 ),
                               ),
@@ -271,16 +280,16 @@ class _FileUploadPageState extends State<FileUploadPage> {
   showAlertDialog(BuildContext context, VoidCallback? onCancel,
       VoidCallback? onYes, String filename) {
     // set up the buttons
-    Widget cancelButton = FlatButton(
-      child: Text("Cancel"),
+    Widget cancelButton = TextButton(
+      child: const Text("Cancel"),
       onPressed: onCancel,
     );
-    Widget continueButton = FlatButton(
-      child: Text("Continue"),
+    Widget continueButton = TextButton(
+      child: const Text("Continue"),
       onPressed: onYes,
     ); // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text("AlertDialog"),
+      title: const Text("AlertDialog"),
       content: Text("Are you sure you want to delete $filename}?"),
       actions: [
         cancelButton,
